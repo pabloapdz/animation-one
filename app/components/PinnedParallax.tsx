@@ -120,9 +120,9 @@ export default function PinnedParallax() {
       duration: isMobile ? 0.28 : 0.38,
     }, 0.26)
     
-    // Ícone 3 + Palavra SOBE - ajustado para mobile
-    .to("#icon3, #reality", {
-      y: isMobile ? "-300%" : "-300%", // Valor intermediário para posição ideal
+    // Ícone 3 + Palavra SOBE - agora como grupo unificado
+    .to("#icon-scale-group", {
+      y: isMobile ? "-300%" : "-300%", // Move o grupo inteiro junto
       duration: isMobile ? 0.36 : 0.46,
     }, 0.34);
 
@@ -271,28 +271,31 @@ export default function PinnedParallax() {
               </span>
             </div>
 
-            {/* Linha 3: Test | Icon | Scale */}
+            {/* Linha 3: Test | Icon + Scale (agrupados) */}
             <div className="flex items-center justify-center gap-3 sm:gap-6 flex-wrap mr-0 sm:mr-80">
               <span id="your2" className={`${baseText} ${subtleText}`}>
                 Test
               </span>
 
-              <div
-                id="icon3"
-                className="icon-rotate rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[3px] sm:p-[4px] shadow-lg shadow-purple-500/30"
-                style={{ perspective: "800px" }}
-              >
-                <div className="rounded-lg sm:rounded-xl bg-white/80 p-4 sm:p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
-                  <svg className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20" viewBox="0 0 100 100" fill="none">
-                    <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="none" />
-                    <path d="M35 50L45 60L70 35" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+              {/* Container wrapper para ícone + texto Scale */}
+              <div id="icon-scale-group" className="flex items-center gap-3 sm:gap-6">
+                <div
+                  id="icon3"
+                  className="icon-rotate rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[3px] sm:p-[4px] shadow-lg shadow-purple-500/30"
+                  style={{ perspective: "800px" }}
+                >
+                  <div className="rounded-lg sm:rounded-xl bg-white/80 p-4 sm:p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
+                    <svg className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20" viewBox="0 0 100 100" fill="none">
+                      <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="none" />
+                      <path d="M35 50L45 60L70 35" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              <span id="reality" className={`${baseText} ${accentText}`}>
-                Scale
-              </span>
+                <span id="reality" className={`${baseText} ${accentText}`}>
+                  Scale
+                </span>
+              </div>
             </div>
 
             {/* Overlay absoluto sem fundo, alinhado no eixo Y com Manifest */}
