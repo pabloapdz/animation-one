@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Portfolio - Development & Digital Innovation
 
-## Getting Started
+A modern and interactive portfolio developed with Next.js, focused on demonstrating web development skills through advanced animations and responsive design.
 
-First, run the development server:
+## ✨ Features
 
+- **Modern Design**: Clean and professional interface focused on user experience
+- **Advanced Animations**: Implemented with GSAP and Framer Motion for smooth transitions
+- **Responsive**: Fully adaptable for different devices and screen sizes
+- **Optimized Performance**: Built with Next.js 16 and React 19 for maximum performance
+- **Reusable Components**: Modular architecture with well-structured components
+
+## 🛠️ Technologies Used
+
+- **Framework**: Next.js 16.0.1
+- **Frontend**: React 19.2.0, TypeScript
+- **Styling**: TailwindCSS 4, Radix UI
+- **Animations**: GSAP 3.13.0, Framer Motion 12.23.24
+- **Icons**: Lucide React
+- **Linting**: ESLint with Next.js configuration
+
+## 🎯 Project Sections
+
+### 1. Video Hero Section
+- Interactive background video
+- Custom playback modal
+- Smooth entrance animations
+
+### 2. Vision and Team Section
+- Mission and values presentation
+- Team cards with GSAP animations
+- Responsive layout with grid system
+
+### 3. Development Process
+- Visual workflow of work process
+- Sequential card animations
+- Custom SVG icons
+
+### 4. Interactive Parallax
+- Parallax effect with ScrollTrigger
+- Dynamic text animations
+- Continuous element rotation
+
+### 5. Professional Footer
+- Social media links
+- Contact information
+- Call-to-action for projects
+
+## 🚀 How to Run
+
+### Prerequisites
+- Node.js 18+ installed
+- npm, yarn, pnpm or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd animation-one
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+animation-one/
+├── app/
+│   ├── components/
+│   │   ├── VideoHeroSection.tsx    # Video hero
+│   │   ├── MissionLeadershipSection.tsx # Vision and team
+│   │   ├── ProcessSection.tsx      # Work process
+│   │   ├── PinnedParallax.tsx     # Parallax section
+│   │   └── Footer.tsx             # Footer
+│   ├── globals.css                # Global styles
+│   ├── layout.tsx                 # Main layout
+│   └── page.tsx                   # Home page
+├── public/                        # Static files
+└── package.json                   # Dependencies
+```
 
-## Learn More
+## 🎨 Customization
 
-To learn more about Next.js, take a look at the following resources:
+### Colors and Theme
+Main colors can be adjusted in the `globals.css` file through custom CSS variables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Animations
+- **GSAP**: Settings in each individual component
+- **Framer Motion**: Variants defined in components
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Content
+All texts and data are centralized in respective components for easy maintenance.
 
-## Deploy on Vercel
+## 📱 Responsiveness
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project uses TailwindCSS with standard breakpoints:
+- **sm**: 640px+
+- **md**: 768px+
+- **lg**: 1024px+
+- **xl**: 1280px+
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔧 Available Scripts
+
+- `npm run dev` - Starts the development server
+- `npm run build` - Creates the production build
+- `npm run start` - Starts the production server
+- `npm run lint` - Runs the linter
+
+## 📈 Performance
+
+- **Core Web Vitals** optimized
+- **Lazy loading** of components
+- **Automatic image optimization** from Next.js
+- **Automatic code splitting**
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions and feedback are always welcome!
+
+## 📄 License
+
+This project is under the MIT license. See the LICENSE file for more details.
+
+## 📞 Contact
+
+- **Email**: contact@devportfolio.com
+- **LinkedIn**: [Your LinkedIn]
+- **GitHub**: [Your GitHub]
+
+---
+
+Developed with ❤️ and lots of ☕ by [Your Name]
