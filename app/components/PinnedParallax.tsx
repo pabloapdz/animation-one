@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -12,6 +12,18 @@ export default function PinnedParallax() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar dispositivo móvel
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current || !containerRef.current) return;
@@ -20,22 +32,27 @@ export default function PinnedParallax() {
     const container = containerRef.current;
     const overlay = overlayRef.current;
 
+    // Ajustar duração das animações para mobile
+    const scrubValue = isMobile ? 0.5 : 1; // Animações mais rápidas em mobile
+    const animationDuration = isMobile ? 0.2 : 0.3;
+    const iconAnimationDuration = isMobile ? 0.15 : 0.25;
+
     // Criar timeline principal
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: scrubValue,
         pin: container,
         anticipatePin: 1,
       },
     });
 
-    // Rotação contínua dos ícones
+    // Rotação contínua dos ícones - mais suave em mobile
     gsap.to(".icon-rotate", {
       rotationY: 360,
-      duration: 1,
+      duration: isMobile ? 0.8 : 1,
       ease: "none",
       scrollTrigger: {
         trigger: section,
@@ -45,13 +62,13 @@ export default function PinnedParallax() {
       },
     });
 
-    // Animações sequenciais das palavras
+    // Animações sequenciais das palavras - otimizadas para mobile
     // Linha 1
     tl.to("#control", {
       x: "-30%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.3,
+      duration: animationDuration,
     }, 0)
     
     // Ícone 1
@@ -59,7 +76,7 @@ export default function PinnedParallax() {
       x: "-120%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.25,
+      duration: iconAnimationDuration,
     }, 0.1)
 
     // Linha 1
@@ -67,7 +84,7 @@ export default function PinnedParallax() {
       x: "-60%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.3,
+      duration: animationDuration,
     }, 0.13)
   
     
@@ -76,7 +93,7 @@ export default function PinnedParallax() {
       x: "-120%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.3,
+      duration: animationDuration,
     }, 0.15)
     
     // Ícone 2 
@@ -84,7 +101,7 @@ export default function PinnedParallax() {
       x: "-120%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.25,
+      duration: iconAnimationDuration,
     }, 0.2)
 
     // Linha 2
@@ -92,7 +109,7 @@ export default function PinnedParallax() {
       x: "-120%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.38,
+      duration: isMobile ? 0.28 : 0.38,
     }, 0.23)
     
     // Linha 3:
@@ -100,13 +117,13 @@ export default function PinnedParallax() {
       x: "-120%",
       opacity: 0,
       filter: "blur(12px)",
-      duration: 0.38,
+      duration: isMobile ? 0.28 : 0.38,
     }, 0.26)
     
-    // Ícone 3 + Palavra SOBE
+    // Ícone 3 + Palavra SOBE - ajustado para mobile
     .to("#icon3, #reality", {
-      y: "-350%",
-      duration: 0.46,
+      y: isMobile ? "-300%" : "-300%", // Valor intermediário para posição ideal
+      duration: isMobile ? 0.36 : 0.46,
     }, 0.34);
 
     // Alinhar overlay verticalmente ao mesmo eixo Y de "Manifest"
@@ -124,7 +141,6 @@ export default function PinnedParallax() {
 
 
     const overlayStart = 0.34; // alinhado com subida
-    const lineGap = 0; // todas as linhas iniciam juntas
 
     const lineEls = gsap.utils
       .toArray<HTMLElement>(".text-line")
@@ -147,16 +163,21 @@ export default function PinnedParallax() {
     function animateLine(words: HTMLElement[], index: number) {
       if (!words.length) return;
       const startPos = overlayStart; 
+      
+      // Animações mais rápidas para mobile
+      const keyframeDuration = isMobile ? 0.1 : 0.15;
+      const staggerDelay = isMobile ? 0.015 : 0.02;
+      
       // Etapas controladas pelo scroll
       tl.to(
         words,
         {
           keyframes: [
-            { xPercent: 660, opacity: 0.2, filter: "blur(24px)", duration: 0.15, ease: "none" },
-            { xPercent: 330, opacity: 0.5, filter: "blur(12px)", duration: 0.15, ease: "none" },
-            { xPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "none" },
+            { xPercent: 660, opacity: 0.2, filter: "blur(24px)", duration: keyframeDuration, ease: "none" },
+            { xPercent: 330, opacity: 0.5, filter: "blur(12px)", duration: keyframeDuration, ease: "none" },
+            { xPercent: 0, opacity: 1, filter: "blur(0px)", duration: keyframeDuration, ease: "none" },
           ],
-          stagger: { each: 0.02, from: "start" },
+          stagger: { each: staggerDelay, from: "start" },
         },
         startPos
       );
@@ -173,7 +194,7 @@ export default function PinnedParallax() {
       ScrollTrigger.removeEventListener("refresh", alignOverlayY);
       window.removeEventListener("resize", alignOverlayY);
     };
-  }, []);
+  }, [isMobile]);
 
   // Text block data
   const paraBlocks = [
@@ -184,29 +205,31 @@ export default function PinnedParallax() {
     "We transform ideas into technological reality"
   ];
 
-  // Utility classes
-  const baseText = "text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight";
+  // Utility classes - responsivos
+  const baseText = isMobile 
+    ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight" 
+    : "text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight";
   const subtleText = "text-zinc-900 dark:text-zinc-50";
-  const accentText = "bg-gradient-to-r from-amber-500 to-yellow-400 bg-clip-text text-transparent italic font-extrabold px-4";
+  const accentText = "bg-gradient-to-r from-amber-500 to-yellow-400 bg-clip-text text-transparent italic font-extrabold px-2 sm:px-4";
 
   return (
     <section id="features" ref={sectionRef} className="relative h-[240vh] bg-white dark:bg-black">
       <div ref={containerRef} className="sticky top-0 relative flex h-screen items-center justify-center">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="space-y-12">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="space-y-8 sm:space-y-12">
             {/* Linha 1: Code | Icon | Create */}
-            <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center justify-center gap-3 sm:gap-6 flex-wrap">
               <span id="control" className={`${baseText} ${subtleText}`}>
                 Code
               </span>
 
               <div
                 id="icon1"
-                className="icon-rotate rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[4px] shadow-lg shadow-purple-500/30"
+                className="icon-rotate rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[3px] sm:p-[4px] shadow-lg shadow-purple-500/30"
                 style={{ perspective: "800px" }}
               >
-                <div className="rounded-xl bg-white/80 p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
-                  <svg className="h-20 w-20" viewBox="0 0 100 100" fill="none">
+                <div className="rounded-lg sm:rounded-xl bg-white/80 p-4 sm:p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
+                  <svg className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20" viewBox="0 0 100 100" fill="none">
                     <path d="M25 35L15 50L25 65" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M75 35L85 50L75 65" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M45 25L35 75" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
@@ -220,18 +243,18 @@ export default function PinnedParallax() {
             </div>
 
             {/* Linha 2: Build | Icon | Deploy */}
-            <div className="flex items-center justify-center gap-6">
-              <span id="mind" className={`${baseText} ${accentText} ml-80`}>
+            <div className="flex items-center justify-center gap-3 sm:gap-6 flex-wrap">
+              <span id="mind" className={`${baseText} ${accentText} ml-0 sm:ml-80`}>
                 Build
               </span>
 
               <div
                 id="icon2"
-                className="icon-rotate rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[4px] shadow-lg shadow-purple-500/30"
+                className="icon-rotate rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[3px] sm:p-[4px] shadow-lg shadow-purple-500/30"
                 style={{ perspective: "800px" }}
               >
-                <div className="rounded-xl bg-white/80 p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
-                  <svg className="h-20 w-20" viewBox="0 0 100 100" fill="none">
+                <div className="rounded-lg sm:rounded-xl bg-white/80 p-4 sm:p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
+                  <svg className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20" viewBox="0 0 100 100" fill="none">
                     <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="6" fill="none" />
                     <circle cx="50" cy="35" r="4" fill="currentColor" />
                     <circle cx="35" cy="57" r="4" fill="currentColor" />
@@ -249,18 +272,18 @@ export default function PinnedParallax() {
             </div>
 
             {/* Linha 3: Test | Icon | Scale */}
-            <div className="flex items-center justify-center gap-6 mr-80">
+            <div className="flex items-center justify-center gap-3 sm:gap-6 flex-wrap mr-0 sm:mr-80">
               <span id="your2" className={`${baseText} ${subtleText}`}>
                 Test
               </span>
 
               <div
                 id="icon3"
-                className="icon-rotate rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[4px] shadow-lg shadow-purple-500/30"
+                className="icon-rotate rounded-xl sm:rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-purple-600 p-[3px] sm:p-[4px] shadow-lg shadow-purple-500/30"
                 style={{ perspective: "800px" }}
               >
-                <div className="rounded-xl bg-white/80 p-4 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
-                  <svg className="h-12 w-12" viewBox="0 0 100 100" fill="none">
+                <div className="rounded-lg sm:rounded-xl bg-white/80 p-4 sm:p-6 text-purple-700 backdrop-blur-sm dark:bg-zinc-900/80">
+                  <svg className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20" viewBox="0 0 100 100" fill="none">
                     <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="none" />
                     <path d="M35 50L45 60L70 35" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -276,7 +299,7 @@ export default function PinnedParallax() {
             <div id="overlay-text" ref={overlayRef} className="absolute left-[45%] -translate-x-1/2 pointer-events-none">
               <div className="max-w-6xl">
                 {paraBlocks.map((text, i) => (
-                  <p key={i} className="text-line text-5xl leading-14 text-zinc-700 dark:text-zinc-300">
+                  <p key={i} className="text-line text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-8 sm:leading-10 md:leading-12 lg:leading-14 text-zinc-700 dark:text-zinc-300">
                     {text.split(" ").flatMap((w, j, arr) => [
                       <span key={`w-${j}`} className="word inline-block will-change-[opacity,filter,transform]">{w}</span>,
                       j < arr.length - 1 ? " " : null,
